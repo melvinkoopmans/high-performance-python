@@ -3,13 +3,13 @@ import time
 from functools import wraps
 
 
-def timefn(fn):
+def timefn(fn, iterations=1):
     @wraps(fn)
     def measure_time(*args, **kwargs):
         measurements = []
         result = None
 
-        for i in range(5):
+        for i in range(iterations):
             t1 = time.time()
             result = fn(*args, **kwargs)
             t2 = time.time()
