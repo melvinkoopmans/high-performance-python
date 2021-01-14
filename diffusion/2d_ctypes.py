@@ -30,7 +30,8 @@ def evolve(grid, out, dt, D=1.0):
     pointer_grid = grid.ctypes.data_as(TYPE_DOUBLE_SS)
     pointer_out = out.ctypes.data_as(TYPE_DOUBLE_SS)
 
-    _diffusion.evolve(pointer_grid, pointer_out, cD, cdt)
+    for i in range(10_000):
+        _diffusion.evolve(pointer_grid, pointer_out, cD, cdt)
 
 
 if __name__ == '__main__':

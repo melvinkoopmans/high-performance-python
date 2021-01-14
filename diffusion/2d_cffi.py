@@ -18,7 +18,8 @@ def evolve(grid, out, dt, D=1.0):
     pointer_grid = ffi.cast("double**", grid.ctypes.data)
     pointer_out = ffi.cast("double**", out.ctypes.data)
 
-    lib.evolve(pointer_grid, pointer_out, D, dt)
+    for i in range(10_000):
+        lib.evolve(pointer_grid, pointer_out, D, dt)
 
 
 if __name__ == '__main__':
