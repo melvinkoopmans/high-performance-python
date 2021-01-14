@@ -2,6 +2,8 @@ import os
 import ctypes
 import numpy as np
 
+from utils.profiling import timefn
+
 grid_shape = (512, 512)
 
 # Import shared library
@@ -17,6 +19,7 @@ _diffusion.evolve.argtypes = [TYPE_DOUBLE_SS, TYPE_DOUBLE_SS, TYPE_DOUBLE, TYPE_
 _diffusion.evolve.restype = None
 
 
+@timefn
 def evolve(grid, out, dt, D=1.0):
     assert grid.shape == (512, 512)
     # Type casting.
