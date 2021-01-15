@@ -7,6 +7,7 @@ The main goals of this project are:
 * Better understand how Python abstracts the computer architecture
 * Optimize linear algebra and other scientific computations
 * Learn Cython, Numba and PyPy
+* Foreign Function Interfaces and CPython Extensions
 * Improving my C/C++ programming and writing Python extensions
 * Multiprocessing on CPU's and GPU's
 * Profiling code (using things like [line_profiler](https://pypi.org/project/line-profiler/), [memory_profiler](https://pypi.org/project/memory-profiler/), 
