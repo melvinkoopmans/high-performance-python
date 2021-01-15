@@ -23,11 +23,8 @@ def evolve(grid, out, dt, D=1.0):
 
 
 @timefn
-def run_experiment():
-    grid = np.array(initialize_grid(grid_shape))
-    out = np.zeros(grid_shape)
-
-    for i in range(10):
+def run_experiment(grid, out):
+    for i in range(10_000):
         evolve(grid, out, 0.1)
         grid, out = out, grid
 
@@ -35,7 +32,10 @@ def run_experiment():
 
 
 if __name__ == '__main__':
-    result = run_experiment()
+    grid = np.array(initialize_grid(grid_shape))
+    out = np.zeros(grid_shape)
+
+    result = run_experiment(grid, out)
 
     plt.imshow(result)
     plt.show()

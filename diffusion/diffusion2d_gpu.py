@@ -2,6 +2,9 @@ import torch
 from torch import (roll, zeros)
 import matplotlib.pyplot as plt
 
+from diffusion2d import initialize_grid
+from utils.profiling import timefn
+
 grid_shape = (640, 640)
 
 
@@ -19,14 +22,8 @@ def evolve(grid, dt, d=1):
     return grid + dt * d * laplacian(grid)
 
 
-def run_experiment(num_iterations):
-    grid = zeros(grid_shape)
-
-    block_low = int(grid_shape[0] * 0.4)
-    block_high = int(grid_shape[0] * 0.5)
-    grid[block_low:block_high, block_low:block_high] = 0.005
-
-    grid = grid.cuda()
+@timefn
+def run_experiment(grid, num_iterations):
     for i in range(num_iterations):
         grid = evolve(grid, 0.1)
 
@@ -34,5 +31,10 @@ def run_experiment(num_iterations):
 
 
 if __name__ == '__main__':
-    # TODO: Compare to NumPy implementation, plot results.
-    result = run_experiment(10)
+    grid = torch.tensor(initialize_grid(grid_shape))
+    grid = grid.cuda()
+
+    result = run_experiment(grid, 10_000)
+
+    plt.imshow(result.cpu().numpy())
+    plt.show()

@@ -8,9 +8,15 @@ Results of running `evolve` for 10.000 iterations for each method:
 
 | Implementation |  Duration   |
 |-----|----|
-| ctypes | 0.027s |
-| cffi | 0.023s |
-| CPython | **0.018s** |
+| numpy | 23.09s |
+| cffi | 1.38s |
+| ctypes | 1.41s |
+| CPython | 1.49s |
+| GPU | **0.70s** |
+
+Note on GPU: moving from system memory to GPU memory is comparatively slow as the data has to travel through the PCIe bus. 
+If we were to include this time into the experiment it takes 2.54s instead of 0.70s! This shows how important it is to make the time spent on GPU as long as possible 
+before returning the data back to system memory.
 
 ### Compiling the shared library
 
