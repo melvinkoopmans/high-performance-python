@@ -1,7 +1,9 @@
 import os
 import ctypes
 import numpy as np
+import matplotlib.pyplot as plt
 
+from diffusion2d import initialize_grid
 from utils.profiling import timefn
 
 grid_shape = (512, 512)
@@ -19,7 +21,6 @@ _diffusion.evolve.argtypes = [TYPE_DOUBLE_SS, TYPE_DOUBLE_SS, TYPE_DOUBLE, TYPE_
 _diffusion.evolve.restype = None
 
 
-@timefn
 def evolve(grid, out, dt, D=1.0):
     assert grid.shape == (512, 512)
     # Type casting.
@@ -30,13 +31,23 @@ def evolve(grid, out, dt, D=1.0):
     pointer_grid = grid.ctypes.data_as(TYPE_DOUBLE_SS)
     pointer_out = out.ctypes.data_as(TYPE_DOUBLE_SS)
 
-    for i in range(10_000):
-        _diffusion.evolve(pointer_grid, pointer_out, cD, cdt)
+    _diffusion.evolve(pointer_grid, pointer_out, cD, cdt)
+
+
+@timefn
+def run_experiment():
+    grid = np.array(initialize_grid(grid_shape))
+    out = np.zeros(grid_shape)
+
+    for i in range(10):
+        evolve(grid, out, 0.1)
+        grid, out = out, grid
+
+    return out
 
 
 if __name__ == '__main__':
-    grid = np.random.rand(*grid_shape)
-    out = np.zeros(grid_shape)
+    result = run_experiment()
 
-    evolve(grid, out, 0.01)
-    print(out)
+    plt.imshow(result)
+    plt.show()

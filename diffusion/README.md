@@ -21,4 +21,10 @@ $ gcc -O3 -c diffusion.c
 $ gcc -shared -o diffusion.so diffusion.o
 ```
 
+### Building the Python module
 
+To build the Python module run:
+
+```
+$ python setup.py build_ext --inplace
+```
