@@ -1,5 +1,7 @@
+import matplotlib.pyplot as plt
 import numpy as np
 from cffi import FFI
+from diffusion2d import initialize_grid
 
 from utils.profiling import timefn
 
@@ -10,7 +12,6 @@ ffi.cdef("void evolve(double **in, double **out, double D, double dt);")
 lib = ffi.dlopen("./diffusion.so")
 
 
-@timefn
 def evolve(grid, out, dt, D=1.0):
     assert grid.shape == (512, 512)
 
@@ -18,13 +19,23 @@ def evolve(grid, out, dt, D=1.0):
     pointer_grid = ffi.cast("double**", grid.ctypes.data)
     pointer_out = ffi.cast("double**", out.ctypes.data)
 
-    for i in range(10_000):
-        lib.evolve(pointer_grid, pointer_out, D, dt)
+    lib.evolve(pointer_grid, pointer_out, D, dt)
+
+
+@timefn
+def run_experiment():
+    grid = np.array(initialize_grid(grid_shape))
+    out = np.zeros(grid_shape)
+
+    for i in range(10):
+        evolve(grid, out, 0.1)
+        grid, out = out, grid
+
+    return out
 
 
 if __name__ == '__main__':
-    grid = np.random.rand(*grid_shape)
-    out = np.zeros(grid_shape)
+    result = run_experiment()
 
-    evolve(grid, out, 0.01)
-    print(out)
+    plt.imshow(result)
+    plt.show()

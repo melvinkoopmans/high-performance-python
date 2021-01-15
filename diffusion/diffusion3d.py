@@ -65,6 +65,6 @@ duration = 12 # seconds
 frames = fps*duration
 
 ani = animation.FuncAnimation(fig, update, frames=frames, interval=1)
-ani.save('3ddiffusion.mp4', fps=fps)
+ani.save('diffusion3d.mp4', fps=fps)
 
 plt.show()

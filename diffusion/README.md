@@ -4,7 +4,7 @@ Various ways of doing 1D, 2D and 3D diffusion within Python and C.
 
 Explored several ways of calling a foreign function using ctypes, cffi and through a CPython module.
 
-Results of running `evolve` for 10000 iterations for each method:
+Results of running `evolve` for 10.000 iterations for each method:
 
 | Implementation |  Duration   |
 |-----|----|
